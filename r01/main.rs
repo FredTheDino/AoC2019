@@ -33,7 +33,7 @@ fn main() {
     let now = SystemTime::now();
     let mut times = Vec::with_capacity(50);
 
-    let input = read_file("input/day01");
+    let input = read_file("../input/day01");
     time_func(&mut times, || { day01::first(&input); });
     time_func(&mut times, || { day01::second(&input); });
 
