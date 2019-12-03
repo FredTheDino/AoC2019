@@ -33,9 +33,6 @@ pub fn first(input : &str) {
     println!("03-B: Steps {}", steps[1]);
 }
 
-pub fn second(input : &String) {
-}
-
 pub fn span_intersect(a1: i32, a2: i32, p1: i32, p2: i32) -> Option<i32> {
     let low;
     let high;
@@ -58,13 +55,9 @@ pub fn find_intersections(wires: Vec<Vec<(i32, i32)>>) -> (Vec<i32>, Vec<i32>) {
     let mut intersections = Vec::new();
     let mut steps = Vec::new();
     let mut stepsA = 0;
-    for i in 1..wires[0].len() {
-        let p1 = &wires[0][i-1];
-        let p2 = &wires[0][i];
+    for (p1, p2) in wires[0].iter().zip(wires[0].iter().skip(1)) {
         let mut stepsB = 0;
-        for j in 1..wires[1].len() {
-            let q1 = &wires[1][j-1];
-            let q2 = &wires[1][j];
+        for (q1, q2) in wires[1].iter().zip(wires[1].iter().skip(1)) {
             let x = span_intersect(p1.0, p2.0, q1.0, q2.0);
             let y = span_intersect(p1.1, p2.1, q1.1, q2.1);
             if x.is_some() && y.is_some() {
