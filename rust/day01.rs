@@ -7,7 +7,7 @@ pub fn first(input : &String) {
     for x in module_weights {
         sum += fuel_req(&x)
     }
-    println!("DAY01-F: {}", sum)
+    println!("01-A: {}", sum)
 }
 
 fn fuel_req(module: &i32) -> i32 { module / 3 - 2 }
@@ -21,7 +21,7 @@ pub fn second(input : &String) {
     for x in module_weights {
         sum += improved_fuel_req(&x)
     }
-    println!("DAY02-F: {}", sum)
+    println!("01-B: {}", sum)
 }
 
 fn improved_fuel_req(module: &i32) -> i32 {

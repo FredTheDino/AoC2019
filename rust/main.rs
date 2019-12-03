@@ -28,6 +28,8 @@ fn time_func<F : FnOnce()>(times : &mut Vec<u64>, func : F) -> u64 {
 }
 
 mod day01;
+mod day02;
+mod day03;
 
 fn main() {
     let now = SystemTime::now();
@@ -36,6 +38,14 @@ fn main() {
     let input = read_file("../input/day01");
     time_func(&mut times, || { day01::first(&input); });
     time_func(&mut times, || { day01::second(&input); });
+
+    let input = read_file("../input/day02");
+    time_func(&mut times, || { day02::first(&input); });
+    time_func(&mut times, || { day02::second(&input); });
+
+    let input = read_file("../input/day03");
+    time_func(&mut times, || { day03::first(&input); });
+    time_func(&mut times, || { day03::second(&input); });
 
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());
 }
