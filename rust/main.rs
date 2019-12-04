@@ -30,6 +30,7 @@ fn time_func<F : FnOnce()>(times : &mut Vec<u64>, func : F) -> u64 {
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 fn main() {
     let now = SystemTime::now();
@@ -37,15 +38,26 @@ fn main() {
 
     let input = read_file("../input/day01");
     time_func(&mut times, || { day01::first(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day01::second(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
 
     let input = read_file("../input/day02");
     time_func(&mut times, || { day02::first(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day02::second(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
 
     let input = read_file("../input/day03");
     time_func(&mut times, || { day03::first(&input); });
-    time_func(&mut times, || { day03::second(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
+
+    let low = 240298;
+    let high = 784956;
+    time_func(&mut times, || { day04::first(low, high); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
+    time_func(&mut times, || { day04::second(low, high); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
 
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());
 }
