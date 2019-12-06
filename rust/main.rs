@@ -31,6 +31,8 @@ mod day01;
 mod day02;
 mod day03;
 mod day04;
+mod day05;
+mod day06;
 
 fn main() {
     let now = SystemTime::now();
@@ -57,6 +59,16 @@ fn main() {
     time_func(&mut times, || { day04::first(low, high); });
     println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day04::second(low, high); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
+
+    let input = read_file("../input/day05");
+    time_func(&mut times, || { day05::first(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
+    time_func(&mut times, || { day05::second(&input); });
+    println!("  Took {}", times.last().unwrap() / 1000000);
+
+    let input = read_file("../input/day06");
+    time_func(&mut times, || { day06::first(&input); });
     println!("  Took {}", times.last().unwrap() / 1000000);
 
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());
