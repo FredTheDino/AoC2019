@@ -33,43 +33,72 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
+mod day08;
+
+fn prev_result(times: &Vec<u64>, end_index: u64) -> u64 {
+    return times[times.len() - end_index as usize] / 1000000;
+}
 
 fn main() {
     let now = SystemTime::now();
     let mut times = Vec::with_capacity(50);
 
+    println!("Day 01:");
     let input = read_file("../input/day01");
     time_func(&mut times, || { day01::first(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day01::second(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
 
+    println!("Day 02:");
     let input = read_file("../input/day02");
     time_func(&mut times, || { day02::first(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day02::second(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
 
     let input = read_file("../input/day03");
+    println!("Day 03:");
     time_func(&mut times, || { day03::first(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
+    println!("{}ms", prev_result(&times, 1));
+    println!("");
 
     let low = 240298;
     let high = 784956;
+    println!("Day 04:");
     time_func(&mut times, || { day04::first(low, high); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day04::second(low, high); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
 
+    println!("Day 05:");
     let input = read_file("../input/day05");
     time_func(&mut times, || { day05::first(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
     time_func(&mut times, || { day05::second(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
 
+    println!("Day 06:");
     let input = read_file("../input/day06");
     time_func(&mut times, || { day06::first(&input); });
-    println!("  Took {}", times.last().unwrap() / 1000000);
+    println!("{}ms", prev_result(&times, 1));
+    println!("");
 
+    println!("Day 07:");
+    let input = read_file("../input/day07");
+    time_func(&mut times, || { day07::first(&input); });
+    time_func(&mut times, || { day07::second(&input); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
+
+
+    println!("Day 08:");
+    let input = read_file("../input/day08");
+    time_func(&mut times, || { day08::first(&input); });
+    time_func(&mut times, || { day08::second(&input); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+
+    println!("");
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());
 }
