@@ -1,10 +1,10 @@
 
-const width: usize = 25;
-const height: usize = 6;
-const dim: usize = width * height;
+const WIDTH: usize = 25;
+const HEIGHT: usize = 6;
+const DIM: usize = WIDTH * HEIGHT;
 
 pub fn first(input: &String) {
-    let mut numbers: Vec<u32> = input.chars()
+    let numbers: Vec<u32> = input.chars()
                            .map(|s| s.to_digit(10).unwrap())
                            .collect();
     let mut best = (1000000, 0, 0);
@@ -12,7 +12,7 @@ pub fn first(input: &String) {
     loop {
         let mut layer = (0, 0, 0);
         if index >= numbers.len() { break; }
-        for i in index..(index + dim) {
+        for i in index..(index + DIM) {
             match numbers[i as usize] {
                 | 0 => { layer.0 += 1; },
                 | 1 => { layer.1 += 1; },
@@ -23,35 +23,35 @@ pub fn first(input: &String) {
         if best.0 > layer.0 {
             best = layer;
         }
-        index += dim;
+        index += DIM;
     }
     println!("{}", best.1 * best.2);
 }
 
 pub fn second(input: &String) {
-    let mut numbers: Vec<u32> = input.chars()
+    let numbers: Vec<u32> = input.chars()
                            .map(|s| s.to_digit(10).unwrap())
                            .collect();
     let mut layers: Vec<Vec<u32>> = Vec::new();
-    const dim: usize = 25 * 6;
+    const DIM: usize = 25 * 6;
     let mut index = 0;
     loop {
-        let mut layer = Vec::with_capacity(dim);
+        let mut layer = Vec::with_capacity(DIM);
         if index >= numbers.len() { break; }
-        for i in index..(index + dim) {
+        for i in index..(index + DIM) {
             layer.push(numbers[i]);
         }
         layers.push(layer);
-        index += dim;
+        index += DIM;
     }
 
-    let mut image: Vec<u32> = Vec::with_capacity(dim);
-    for i in 0..dim {
+    let mut image: Vec<u32> = Vec::with_capacity(DIM);
+    for _ in 0..DIM {
         image.push(2);
     }
 
     for layer in layers.iter() {
-        for i in 0..dim {
+        for i in 0..DIM {
             match image[i] {
                 | 2 => { image[i] = layer[i]; },
                 | _ => {},
@@ -59,9 +59,9 @@ pub fn second(input: &String) {
         }
     }
 
-    for y in 0..height {
-        for x in 0..width {
-            let index = x + y * width;
+    for y in 0..HEIGHT {
+        for x in 0..WIDTH {
+            let index = x + y * WIDTH;
             if image[index] == 1 {
                 print!("O");
             } else {

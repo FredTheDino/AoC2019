@@ -10,7 +10,6 @@ pub fn first(input : &String) {
         let op_code = program[index] % 100;
         let a_mode: i32 = ((program[index]) / 100) % 10;
         let b_mode: i32 = ((program[index]) / 1000) % 10;
-        let c_mode: i32 = ((program[index]) / 10000) % 10;
         match op_code {
             1 => {
                 // Add
@@ -68,7 +67,6 @@ pub fn second(input : &String) {
         let op_code = program[index] % 100;
         let a_mode: i32 = ((program[index]) / 100) % 10;
         let b_mode: i32 = ((program[index]) / 1000) % 10;
-        let c_mode: i32 = ((program[index]) / 10000) % 10;
         match op_code {
             1 => {
                 // Add

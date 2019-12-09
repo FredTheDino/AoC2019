@@ -1,15 +1,7 @@
 pub fn first(input : &String) {
-    let mut program: Vec<i32> = input.split(",")
+    let program: Vec<i32> = input.split(",")
                                         .map(|s| s.parse().unwrap())
                                         .collect();
-
-    let programs = [
-        program.clone(),
-        program.clone(),
-        program.clone(),
-        program.clone(),
-        program.clone(),
-    ];
 
     let mut maximum = 0;
     for a in 0..=4 {
@@ -47,7 +39,7 @@ fn fetch_val(program: &Vec<i32>, mode: i32, index: usize) -> i32 {
 }
 
 pub fn second(input : &String) {
-    let mut program: Vec<i32> = input.split(",")
+    let program: Vec<i32> = input.split(",")
                                         .map(|s| s.parse().unwrap())
                                         .collect();
 
@@ -71,7 +63,7 @@ pub fn second(input : &String) {
                         ];
                         let phase = [a, b, c, d, e];
                         let mut out = 0;
-                        for (mut prog, phase) in programs.iter_mut().zip(phase.iter()) {
+                        for (prog, phase) in programs.iter_mut().zip(phase.iter()) {
                                 out = run_program_better(&mut prog.1,
                                                          &mut prog.0,
                                                          *phase, out).0;
@@ -104,13 +96,12 @@ pub fn second(input : &String) {
 
 fn run_program(program: &mut Vec<i32>, phase: i32, signal: i32) -> i32 {
     let mut selector = 0;
-    let mut output = -1;
+    let output = -1;
     let mut index = 0;
     loop {
         let op_code = program[index] % 100;
         let a_mode: i32 = ((program[index]) / 100) % 10;
         let b_mode: i32 = ((program[index]) / 1000) % 10;
-        let c_mode: i32 = ((program[index]) / 10000) % 10;
         match op_code {
             1 => {
                 // add
@@ -143,7 +134,6 @@ fn run_program(program: &mut Vec<i32>, phase: i32, signal: i32) -> i32 {
                 // output
                 let c = fetch_val(&program, a_mode, index + 1);
                 return c;
-                index += 2;
             },
             5 => {
                 // jump
@@ -194,7 +184,6 @@ fn run_program_better(index: &mut usize, program: &mut Vec<i32>, phase: i32, sig
         let op_code = program[*index] % 100;
         let a_mode: i32 = ((program[*index]) / 100) % 10;
         let b_mode: i32 = ((program[*index]) / 1000) % 10;
-        let c_mode: i32 = ((program[*index]) / 10000) % 10;
         match op_code {
             1 => {
                 // add
