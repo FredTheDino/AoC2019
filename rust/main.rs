@@ -36,6 +36,8 @@ mod day06;
 mod day07;
 mod day08;
 mod day09;
+mod day10;
+mod day11;
 
 fn prev_result(times: &Vec<u64>, end_index: u64) -> u64 {
     return times[times.len() - end_index as usize] / 1000000;
@@ -105,6 +107,21 @@ fn main() {
     let input = read_file("../input/day09");
     time_func(&mut times, || { day09::first(&input); });
     time_func(&mut times, || { day09::second(&input); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
+
+    println!("Day 10:");
+    let input = read_file("../input/day10");
+    let mut out = (0, 0);
+    time_func(&mut times, || { out = day10::first(&input); });
+    time_func(&mut times, || { day10::second(&input, out); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
+
+    println!("Day 11:");
+    let input = read_file("../input/day11");
+    time_func(&mut times, || { day11::first(&input); });
+    time_func(&mut times, || { day11::second(&input); });
     println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
     println!("");
 

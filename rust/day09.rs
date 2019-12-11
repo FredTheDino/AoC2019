@@ -36,7 +36,7 @@ pub fn second(input : &String) {
     println!("");
 }
 
-static mut base_ptr: i64 = 0;
+static mut BASE_PTR: i64 = 0;
 fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool) -> i64 {
     let at = program[&index];
     if addr {
@@ -44,7 +44,7 @@ fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool)
             at
         } else if mode == 2 {
             unsafe {
-                base_ptr + at
+                BASE_PTR + at
             }
         } else {
             panic!("Invalid address mode?");
@@ -56,7 +56,7 @@ fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool)
             at
         } else {
             unsafe {
-                *program.entry(base_ptr + at).or_insert(0)
+                *program.entry(BASE_PTR + at).or_insert(0)
             }
         }
     }
@@ -64,7 +64,7 @@ fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool)
 
 fn run_program(mut program: &mut HashMap<i64, i64>, input: i64) -> Vec<i64> {
     unsafe {
-        base_ptr = 0;
+        BASE_PTR = 0;
     }
     let mut index = 0;
     let mut output = Vec::new();
@@ -142,7 +142,7 @@ fn run_program(mut program: &mut HashMap<i64, i64>, input: i64) -> Vec<i64> {
                 // Update relative
                 let a = fetch_val(& mut program, a_mode, index + 1, false);
                 unsafe {
-                    base_ptr += a;
+                    BASE_PTR += a;
                 }
                 index += 2;
             }
