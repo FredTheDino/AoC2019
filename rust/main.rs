@@ -38,6 +38,8 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+mod day12;
+mod day13;
 
 fn prev_result(times: &Vec<u64>, end_index: u64) -> u64 {
     return times[times.len() - end_index as usize] / 1000000;
@@ -47,6 +49,7 @@ fn main() {
     let now = SystemTime::now();
     let mut times = Vec::with_capacity(50);
 
+    if false {
     println!("Day 01:");
     let input = read_file("../input/day01");
     time_func(&mut times, || { day01::first(&input); });
@@ -122,6 +125,22 @@ fn main() {
     let input = read_file("../input/day11");
     time_func(&mut times, || { day11::first(&input); });
     time_func(&mut times, || { day11::second(&input); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
+
+    println!("Day 12:");
+    let input = vec![(-4, -14, 8), (1, -8, 10), (-15, 2, 1), (-17, -17, 16)];
+    // let input = vec![(-1,0, 2), (2, -10, -7), (4, -8, 8), (3, 5, -1)];
+    time_func(&mut times, || { day12::first(&input); });
+    time_func(&mut times, || { day12::second(&input); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
+    }
+
+    println!("Day 13:");
+    let input = read_file("../input/day13");
+    time_func(&mut times, || { day13::first(&input); });
+    time_func(&mut times, || { day13::second(&input); });
     println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
     println!("");
 
