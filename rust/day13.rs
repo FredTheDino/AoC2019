@@ -35,30 +35,39 @@ pub fn first(input : &String) {
         max_pos.1 = max(max_pos.1, y);
     }
     let mut num = 0;
-    println!("");
-    for y in (min_pos.1..=max_pos.1) {
+    const PRINT: bool = false;
+    if PRINT {
         println!("");
-        for x in (min_pos.0..=max_pos.0) {
-            let pos = (x, y);
-            let color;
-            if screen.contains_key(&pos) {
-                color = *screen.get(&pos).unwrap();
-            } else {
-                color = 0;
-            }
-            match color {
-                0 => print!(" "),
-                1 => print!("W"),
-                2 => { print!("B"); num += 1; },
-                3 => print!("H"),
-                4 => print!("O"),
-                _ => panic!("Invalid!"),
+        for y in (min_pos.1..=max_pos.1) {
+            println!("");
+            for x in (min_pos.0..=max_pos.0) {
+                let pos = (x, y);
+                let color;
+                if screen.contains_key(&pos) {
+                    color = *screen.get(&pos).unwrap();
+                } else {
+                    color = 0;
+                }
+                match color {
+                    0 => print!(" "),
+                    1 => print!("W"),
+                    2 => print!("B"),
+                    3 => print!("H"),
+                    4 => print!("O"),
+                    _ => panic!("Invalid!"),
+                }
+                if color == 2 {
+                    num += 1;
+                }
             }
         }
+        println!("");
+    } else {
+        for (_, value) in screen {
+            num += (value == 2) as u32;
+        }
     }
-    println!("");
-    print!("13-A: {}", num);
-    println!("");
+    println!("13-A: {}", num);
 }
 
 pub fn second(input : &String) {
@@ -97,9 +106,7 @@ pub fn second(input : &String) {
         }
     }
 
-    println!("");
-    print!("13-B: {}", score);
-    println!("");
+    println!("13-B: {}", score);
 }
 
 static mut BASE_PTR: i64 = 0;

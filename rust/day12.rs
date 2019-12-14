@@ -16,7 +16,7 @@ pub fn first(input: &Vec<(i32, i32, i32)>) {
     for p in planets {
         sum += kinetic_energy(p.0, p.1);
     }
-    println!("Day 12-A: {}", sum);
+    println!("12-A: {}", sum);
 }
 
 
@@ -82,10 +82,20 @@ pub fn second(input: &Vec<(i32, i32, i32)>) {
         planets.push((*p, (0, 0, 0)));
     }
 
-    let mut coords = [HashMap::new(), HashMap::new(), HashMap::new()];
+    let mut coords = [((0, 0), (0, 0), (0, 0), (0, 0)); 3];
     let mut found = [0; 3];
 
-    let mut i = 0;
+    let mut i = 1;
+    simulate(& mut planets);
+
+    for axis in 0..coords.len() {
+        let bundle = (get_all_of(planets[0], axis as i32),
+                      get_all_of(planets[1], axis as i32),
+                      get_all_of(planets[2], axis as i32),
+                      get_all_of(planets[3], axis as i32));
+        coords[axis] = bundle;
+    }
+    
     loop { 
         simulate(& mut planets);
         i += 1;
@@ -97,11 +107,10 @@ pub fn second(input: &Vec<(i32, i32, i32)>) {
                           get_all_of(planets[2], axis as i32),
                           get_all_of(planets[3], axis as i32));
 
-            if coords[axis].contains_key(&bundle) {
-                found[axis] = (i - coords[axis].get(&bundle).unwrap()) as i64;
+            if coords[axis] == bundle {
+                found[axis] = (i - 1) as i64;
             } else {
                 done = false;
-                coords[axis].insert(bundle, i);
             }
         }
         if done {
@@ -110,5 +119,5 @@ pub fn second(input: &Vec<(i32, i32, i32)>) {
     }
 
     let comp = lcm(lcm(found[0], found[1]), found[2]);
-    println!("Day 12-b: {}", comp);
+    println!("12-b: {}", comp);
 }
