@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 pub fn first(input: &Vec<(i32, i32, i32)>) {
     let mut planets: Vec<((i32, i32, i32), (i32, i32, i32))> = Vec::new();
     for p in input {

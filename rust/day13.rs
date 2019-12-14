@@ -38,9 +38,9 @@ pub fn first(input : &String) {
     const PRINT: bool = false;
     if PRINT {
         println!("");
-        for y in (min_pos.1..=max_pos.1) {
+        for y in min_pos.1..=max_pos.1 {
             println!("");
-            for x in (min_pos.0..=max_pos.0) {
+            for x in min_pos.0..=max_pos.0 {
                 let pos = (x, y);
                 let color;
                 if screen.contains_key(&pos) {
