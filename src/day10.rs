@@ -25,7 +25,7 @@ pub fn first(input : &String) -> (i32, i32) {
                         let num_asteroids = current.len();
                         if maximum < num_asteroids {
                             maximum = num_asteroids;
-                            point = (px, py);
+                            point = (x, y);
                         }
                     }
                 }
@@ -57,8 +57,9 @@ fn length_sq(delta: (i32, i32)) -> i32 {
     delta.0 * delta.0 + delta.1 * delta.1
 }
 
+
 pub fn second(input : &String, point: (i32, i32)) {
-    let map: Vec<char> = input.chars()
+    let mut map: Vec<char> = input.chars()
             .filter(|s| *s != '\n')
             .collect();
 
@@ -83,6 +84,7 @@ pub fn second(input : &String, point: (i32, i32)) {
             hitlist.get_mut(&slope).unwrap().push((-length_sq(delta), px, py));
         }
     }
+    map[to_linear(point.0, point.1, dim)] = 'X';
 
     for hits in hitlist.values_mut() {
         hits.sort_unstable_by(|a, b| a.0.cmp(&b.0));
@@ -92,17 +94,36 @@ pub fn second(input : &String, point: (i32, i32)) {
 
     keys.sort_unstable_by_key(|a| ((((-a.1) as f64).atan2(a.0 as f64) * 10000.0) as u64));
     let mut i = 0;
-    let mut destoryed = 0;
+    let mut destoryed = 1;
     loop {
         let popped = hitlist.get_mut(&keys[i % keys.len()]).unwrap().pop();
         if popped.is_some() {
+            let (_, x, y) = popped.unwrap();
+            map[to_linear(x, y, dim)] = (destoryed % 10).to_string().chars()
+                                                                    .next()
+                                                                    .unwrap();
+            // vizualise(&map, dim);
             destoryed += 1;
         }
-        if destoryed == 200 {
+        if destoryed == 201 {
             let unwrapped = popped.unwrap();
-            println!("10-B: {} ({}, {})", unwrapped.1 * 100 + unwrapped.2, unwrapped.1, unwrapped.2);
+            println!("10-B: {} ({}, {})", unwrapped.2 * 100 + unwrapped.1, unwrapped.1, unwrapped.2);
+            // 414 too low, 512 too low, 1518 WRONG, 607 wrong
             return;
         }
         i += 1;
     }
+}
+
+use std::io;
+fn vizualise(map: &Vec<char>, dim: i32) {
+    let mut input_text = String::new();
+    io::stdin().read_line(&mut input_text);
+    for px in 0..dim {
+        println!("");
+        for py in 0..dim {
+            print!("{}", map[to_linear(px, py, dim)]);
+        }
+    }
+    println!("");
 }

@@ -42,6 +42,7 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
 
 fn prev_result(times: &Vec<u64>, end_index: u64) -> u64 {
     return times[times.len() - end_index as usize] / 1000000;
@@ -143,19 +144,34 @@ fn main() {
         time_func(&mut times, || { day13::second(&input); });
         println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
         println!("");
+
+        println!("Day 14:");
+        let input = read_file("input/day14");
+        time_func(&mut times, || { day14::first(&input); });
+        time_func(&mut times, || { day14::second(&input); });
+        println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+        println!("");
+
+        println!("Day 15:");
+        let input = read_file("input/day15");
+        time_func(&mut times, || { day15::first(&input); });
+        println!("{}ms", prev_result(&times, 1));
+        println!("");
+
+        println!("Day 16:");
+        let input = read_file("input/day16");
+        // let input = "80871224585914546619083218645595".to_string();
+        time_func(&mut times, || { day16::first(&input); });
+        time_func(&mut times, || { day16::second(&input); });
+        println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+        println!("");
     }
-
-    println!("Day 14:");
-    let input = read_file("input/day14");
-    time_func(&mut times, || { day14::first(&input); });
-    time_func(&mut times, || { day14::second(&input); });
+    println!("Day 16:");
+    let input = read_file("input/day16");
+    // let input = "80871224585914546619083218645595".to_string();
+    time_func(&mut times, || { /*day16::first(&input)*/; });
+    time_func(&mut times, || { day16::second(&input); });
     println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
-    println!("");
-
-    println!("Day 15:");
-    let input = read_file("input/day15");
-    time_func(&mut times, || { day15::first(&input); });
-    println!("{}ms", prev_result(&times, 1));
     println!("");
 
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());

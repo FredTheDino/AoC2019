@@ -3,17 +3,13 @@ use std::cmp::min;
 use std::cmp::max;
 
 pub fn first(input : &String) {
-    let program: Vec<i64> = input.split(",")
+    let mut memory: Vec<i64> = input.split(",")
                                  .map(|s| s.parse().unwrap())
                                  .collect();
-    let mut memory: HashMap<i64, i64> = HashMap::new();
-    for i in 0..program.len() {
-        let value = program[i as usize];
-        memory.insert(i as i64, value);
-    }
+    let mut extension = vec!(0; 500);
+    memory.append(&mut extension);
 
     let mut screen = HashMap::new();
-    screen.reserve(2000);
 
     let mut min_pos: (i64, i64) = (0, 0);
     let mut max_pos: (i64, i64) = (0, 0);
@@ -71,15 +67,12 @@ pub fn first(input : &String) {
 }
 
 pub fn second(input : &String) {
-    let program: Vec<i64> = input.split(",")
+    let mut memory: Vec<i64> = input.split(",")
                                  .map(|s| s.parse().unwrap())
                                  .collect();
-    let mut memory: HashMap<i64, i64> = HashMap::new();
-    for i in 0..program.len() {
-        let value = program[i as usize];
-        memory.insert(i as i64, value);
-    }
-    memory.insert(0, 2);
+    let mut extension = vec!(0; 500);
+    memory.append(&mut extension);
+    memory[0] = 2;
 
     let mut score = 0;
     let mut paddle_x: i64 = 0;
@@ -110,8 +103,8 @@ pub fn second(input : &String) {
 }
 
 static mut BASE_PTR: i64 = 0;
-fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool) -> i64 {
-    let at = program[&index];
+fn fetch_val(program: &mut Vec<i64>, mode: i64, index: i64, addr: bool) -> i64 {
+    let at = program[index as usize];
     if addr {
         if mode == 0 {
             at
@@ -124,12 +117,12 @@ fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool)
         }
     } else {
         if mode == 0 {
-            *program.entry(at).or_insert(0)
+            program[at as usize]
         } else if mode == 1 {
-            at
+            at as i64
         } else {
             unsafe {
-                *program.entry(BASE_PTR + at).or_insert(0)
+                program[(BASE_PTR + at) as usize]
             }
         }
     }
@@ -144,48 +137,48 @@ fn reset_int_comp() {
     }
 }
 
-fn run_program(mut program: &mut HashMap<i64, i64>, input: i64) -> (i64, bool) {
+fn run_program(mut program: &mut Vec<i64>, input: i64) -> (i64, bool) {
     loop {
         let mut index;
         unsafe {
             index = PROGRAM_PTR;
         }
 
-        let op_code = program[&index] % 100;
-        let a_mode: i64 = ((program[&index]) / 100) % 10;
-        let b_mode: i64 = ((program[&index]) / 1000) % 10;
-        let c_mode: i64 = ((program[&index]) / 10000) % 10;
+        let op_code = program[index as usize] % 100;
+        let a_mode: i64 = ((program[index as usize]) / 100) % 10;
+        let b_mode: i64 = ((program[index as usize]) / 1000) % 10;
+        let c_mode: i64 = ((program[index as usize]) / 10000) % 10;
         match op_code {
             1 => {
                 // add
                 let a = fetch_val(& mut program, a_mode, index + 1, false);
                 let b = fetch_val(& mut program, b_mode, index + 2, false);
-                let c = fetch_val(& mut program, c_mode, index + 3, true);
-                program.insert(c, a + b);
+                let c = fetch_val(& mut program, c_mode, index + 3, true) as usize;
+                program[c] = a + b;
                 index += 4;
             },
             2 => {
                 // mul
                 let a = fetch_val(& mut program, a_mode, index + 1, false);
                 let b = fetch_val(& mut program, b_mode, index + 2, false);
-                let c = fetch_val(& mut program, c_mode, index + 3, true);
-                program.insert(c, a * b);
+                let c = fetch_val(& mut program, c_mode, index + 3, true) as usize;
+                program[c] = a * b;
                 index += 4;
             },
             3 => {
                 // input
-                let c = fetch_val(& mut program, a_mode, index + 1, true);
-                program.insert(c, input);
+                let c = fetch_val(& mut program, a_mode, index + 1, true) as usize;
+                program[c] = input;
                 index += 2;
             },
             4 => {
                 // output
-                let c = fetch_val(& mut program, a_mode, index + 1, false);
+                let c = fetch_val(& mut program, a_mode, index + 1, false) as usize;
                 index += 2;
                 unsafe {
                     PROGRAM_PTR = index;
                 }
-                return (c, false);
+                return (c as i64, false);
             },
             5 => {
                 // jump
@@ -211,16 +204,16 @@ fn run_program(mut program: &mut HashMap<i64, i64>, input: i64) -> (i64, bool) {
                 // <
                 let a = fetch_val(& mut program, a_mode, index + 1, false);
                 let b = fetch_val(& mut program, b_mode, index + 2, false);
-                let c = fetch_val(& mut program, c_mode, index + 3, true);
-                program.insert(c, if a < b { 1 } else { 0 });
+                let c = fetch_val(& mut program, c_mode, index + 3, true) as usize;
+                program[c] = if a < b { 1 } else { 0 };
                 index += 4;
             },
             8 => {
                 // ==
                 let a = fetch_val(& mut program, a_mode, index + 1, false);
                 let b = fetch_val(& mut program, b_mode, index + 2, false);
-                let c = fetch_val(& mut program, c_mode, index + 3, true);
-                program.insert(c, if a == b { 1 } else { 0 });
+                let c = fetch_val(& mut program, c_mode, index + 3, true) as usize;
+                program[c] = if a == b { 1 } else { 0 };
                 index += 4;
             },
             9 => {
