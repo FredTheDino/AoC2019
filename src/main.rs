@@ -1,6 +1,7 @@
 use std::time::{SystemTime};
 use std::io::prelude::*;
 use std::fs::File;
+use std::collections::HashSet;
 
 // Utility function.
 fn read_file(path : &str) -> String {
@@ -43,6 +44,7 @@ mod day13;
 mod day14;
 mod day15;
 mod day16;
+mod day17;
 
 fn prev_result(times: &Vec<u64>, end_index: u64) -> u64 {
     return times[times.len() - end_index as usize] / 1000000;
@@ -158,21 +160,27 @@ fn main() {
         println!("{}ms", prev_result(&times, 1));
         println!("");
 
+    }
         println!("Day 16:");
         let input = read_file("input/day16");
         // let input = "80871224585914546619083218645595".to_string();
+        // let input = "80871224585914546619083218645595".to_string();
+        // let input = "03036732577212944063491565474664".to_string();
         time_func(&mut times, || { day16::first(&input); });
         time_func(&mut times, || { day16::second(&input); });
         println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
         println!("");
-    }
-    println!("Day 16:");
-    let input = read_file("input/day16");
-    // let input = "80871224585914546619083218645595".to_string();
-    time_func(&mut times, || { /*day16::first(&input)*/; });
-    time_func(&mut times, || { day16::second(&input); });
+
+    if false {
+    println!("Day 17:");
+    let input = read_file("input/day17");
+    let mut map = HashSet::new();
+    let mut pos = (0, 0);
+    time_func(&mut times, || { let a = day17::first(&input); map = a.0; pos = a.1; });
+    time_func(&mut times, || { day17::second(&input, &map, pos); });
     println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
     println!("");
+    }
 
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());
 }
