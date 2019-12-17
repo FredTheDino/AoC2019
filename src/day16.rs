@@ -20,23 +20,22 @@ pub fn first(input : &String) {
 fn fft(sequence: &Vec<u8>) -> Vec<u8> {
     let mut next: Vec<u8> = Vec::with_capacity(sequence.len());
     for i in 0..sequence.len() {
-        let index = i as usize;
         let mut slot = i;
         let mut sum = 0;
         // Something wrong
         loop {
-            for _ in 0..=index {
+            for _ in 0..=i {
                 if slot >= sequence.len() { break; }
                 sum += sequence[slot] as i32;
                 slot += 1;
             }
-            slot += (index + 1);
-            for _ in 0..=index {
+            slot += (i + 1);
+            for _ in 0..=i {
                 if slot >= sequence.len() { break; }
                 sum -= sequence[slot] as i32;
                 slot += 1;
             }
-            slot += (index + 1);
+            slot += (i + 1);
             if slot >= sequence.len() { break; }
         }
         next.push((sum.abs() % 10) as u8);
@@ -44,15 +43,15 @@ fn fft(sequence: &Vec<u8>) -> Vec<u8> {
     return next;
 }
 
-fn ffft(sequence: &Vec<u8>, offset: i32) -> Vec<u8> {
+fn ffft(sequence: &mut Vec<u8>, offset: i32) {
     assert!(sequence.len() < offset as usize);
     let mut total_sum: u64 = sequence.iter().fold(0u64, |s, a| s + (*a as u64));
     let mut next: Vec<u8> = Vec::with_capacity(sequence.len());
     for i in 0..sequence.len() {
-        next.push((total_sum % 10) as u8);
+        let digit = (total_sum % 10) as u8;
         total_sum -= sequence[i as usize] as u64;
+        sequence[i as usize] = digit;
     }
-    return next;
 }
 
 pub fn second(input : &String) {
@@ -78,7 +77,7 @@ pub fn second(input : &String) {
 
     let mut next = list;
     for i in 0..100 {
-        next = ffft(&next, offset as i32);
+        ffft(&mut next, offset as i32);
     }
     // 42572042 too high
     print!("16-B: ");

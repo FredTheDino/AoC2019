@@ -54,7 +54,7 @@ fn main() {
     let now = SystemTime::now();
     let mut times = Vec::with_capacity(50);
 
-    if false {
+    if true {
         println!("Day 01:");
         let input = read_file("input/day01");
         time_func(&mut times, || { day01::first(&input); });
@@ -161,15 +161,12 @@ fn main() {
         println!("");
 
     }
-        println!("Day 16:");
-        let input = read_file("input/day16");
-        // let input = "80871224585914546619083218645595".to_string();
-        // let input = "80871224585914546619083218645595".to_string();
-        // let input = "03036732577212944063491565474664".to_string();
-        time_func(&mut times, || { day16::first(&input); });
-        time_func(&mut times, || { day16::second(&input); });
-        println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
-        println!("");
+    println!("Day 16:");
+    let input = read_file("input/day16");
+    time_func(&mut times, || { day16::first(&input); });
+    time_func(&mut times, || { day16::second(&input); });
+    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+    println!("");
 
     if false {
     println!("Day 17:");
