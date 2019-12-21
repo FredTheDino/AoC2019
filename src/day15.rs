@@ -88,7 +88,7 @@ pub fn first(input : &String) {
     let mut min_pos = (0, 0);
     let mut max_pos = (0, 0);
     map.insert(pos, 1);
-    let mut direction = 0;
+    let mut direction;
     let mut target = (0, 0);
     loop {
         direction = find_unexplored(pos, &map);
@@ -100,7 +100,7 @@ pub fn first(input : &String) {
             pos = next_pos;
         }
 
-        if (result.0 == 2) {
+        if result.0 == 2 {
             target = next_pos;
         }
 
@@ -175,6 +175,7 @@ fn fetch_val(program: &mut HashMap<i64, i64>, mode: i64, index: i64, addr: bool)
 
 static mut PROGRAM_PTR: i64 = 0;
 
+#[allow(dead_code)]
 fn reset_int_comp() {
     unsafe {
         BASE_PTR = 0;
@@ -277,6 +278,5 @@ fn run_program(mut program: &mut HashMap<i64, i64>, input: i64) -> (i64, bool) {
     }
     println!("no...");
     panic!("Should not finish!");
-    return (0, true);
 }
 

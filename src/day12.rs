@@ -116,6 +116,7 @@ pub fn second(input: &Vec<(i32, i32, i32)>) {
         }
     }
 
+    println!("{:?}", found);
     let comp = lcm(lcm(found[0], found[1]), found[2]);
     println!("12-b: {}", comp);
 }

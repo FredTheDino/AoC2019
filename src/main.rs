@@ -45,6 +45,9 @@ mod day14;
 mod day15;
 mod day16;
 mod day17;
+mod day18;
+
+mod day21;
 
 fn prev_result(times: &Vec<u64>, end_index: u64) -> u64 {
     return times[times.len() - end_index as usize] / 1000000;
@@ -54,7 +57,7 @@ fn main() {
     let now = SystemTime::now();
     let mut times = Vec::with_capacity(50);
 
-    if true {
+    if false {
         println!("Day 01:");
         let input = read_file("input/day01");
         time_func(&mut times, || { day01::first(&input); });
@@ -160,24 +163,40 @@ fn main() {
         println!("{}ms", prev_result(&times, 1));
         println!("");
 
+        println!("Day 16:");
+        let input = read_file("input/day16");
+        time_func(&mut times, || { day16::first(&input); });
+        time_func(&mut times, || { day16::second(&input); });
+        println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+        println!("");
     }
-    println!("Day 16:");
-    let input = read_file("input/day16");
-    time_func(&mut times, || { day16::first(&input); });
-    time_func(&mut times, || { day16::second(&input); });
-    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
-    println!("");
 
     if false {
-    println!("Day 17:");
-    let input = read_file("input/day17");
-    let mut map = HashSet::new();
-    let mut pos = (0, 0);
-    time_func(&mut times, || { let a = day17::first(&input); map = a.0; pos = a.1; });
-    time_func(&mut times, || { day17::second(&input, &map, pos); });
-    println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
-    println!("");
+        println!("Day 17:");
+        let input = read_file("input/day17");
+        let mut map = HashSet::new();
+        let mut pos = (0, 0);
+        time_func(&mut times, || { let a = day17::first(&input); map = a.0; pos = a.1; });
+        time_func(&mut times, || { day17::second(&input, &map, pos); });
+        println!("{}ms, {}ms", prev_result(&times, 2), prev_result(&times, 1));
+        println!("");
     }
+
+    if false {
+        println!("Day 18:");
+        let input = read_file("input/day18");
+        // let input = read_file("input/day18-simple");
+        time_func(&mut times, || { day18::first(&input); });
+        println!("{}ms", prev_result(&times, 1));
+        println!("");
+    }
+
+    println!("Day 21:");
+    let input = read_file("input/day21");
+    time_func(&mut times, || { day21::first(&input); });
+    time_func(&mut times, || { day21::second(&input); });
+    println!("{}ms", prev_result(&times, 1));
+    println!("");
 
     println!("Total Time {}ms", now.elapsed().unwrap().as_millis());
 }

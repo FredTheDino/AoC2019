@@ -115,10 +115,12 @@ pub fn second(input : &String, point: (i32, i32)) {
     }
 }
 
+#[allow(unused_imports)]
 use std::io;
+#[allow(dead_code)]
 fn vizualise(map: &Vec<char>, dim: i32) {
     let mut input_text = String::new();
-    io::stdin().read_line(&mut input_text);
+    let _ = io::stdin().read_line(&mut input_text);
     for px in 0..dim {
         println!("");
         for py in 0..dim {

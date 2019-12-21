@@ -1,7 +1,6 @@
 use std::collections::HashMap;
-use std::collections::HashSet;
 
-pub fn first(input : &String) -> (HashSet<(i32, i32)>, (i32, i32)) {
+pub fn first(input: &String) {
     let program: Vec<i64> = input.split(",")
                                  .map(|s| s.parse().unwrap())
                                  .collect();
@@ -12,157 +11,71 @@ pub fn first(input : &String) -> (HashSet<(i32, i32)>, (i32, i32)) {
     }
     reset_int_comp();
     let mut output: Vec<char> = Vec::new();
+    let string = "\
+OR C T
+NOT C J
+OR J T
+OR T J
+AND C T
+AND B T
+AND A T
+NOT T T
+AND D J
+AND T J
+WALK
+".to_string();
     loop {
-        let result = run_program(& mut memory);
+        let result = run_program(&mut memory, &string);
         if result.1 { break; }
-        output.push((result.0 as u8) as char);
-    }
-
-    let row_length = output.iter().position(|s| *s == '\n').unwrap() as i32;
-    let row_length = row_length + 1;
-    let mut sum = 0;
-    let mut map = HashSet::new();
-    let mut pos = (0, 0);
-    for x in 0..(row_length - 1) {
-        for y in 0..(row_length - 1) {
-            let h = '#';
-            let curr = output[to_linear(x + 0, y + 0, row_length)];
-            if curr == '.' { continue; }
-            if curr == '^' { pos = (x, y); }
-            map.insert((x, y));
-            if x <= 1 || x <= (row_length - 1) { continue; }
-            if y <= 1 || y <= (row_length - 1) { continue; }
-            if output[to_linear(x - 1, y + 0, row_length)] != h { continue; }
-            if output[to_linear(x + 1, y + 0, row_length)] != h { continue; }
-            if output[to_linear(x + 0, y + 1, row_length)] != h { continue; }
-            if output[to_linear(x + 0, y - 1, row_length)] != h { continue; }
-            output[to_linear(x, y, row_length)] = 'X';
-            sum += x * y;
+        if result.0 < 255 {
+            output.push((result.0 as u8) as char);
+        } else {
+            println!("DID IT: {}", result.0);
         }
     }
     let output: String = output.into_iter().collect();
     println!("{}", output);
-    // Too low 4790
-    println!("17-A: {}", sum);
-    return (map, pos);
 }
 
-fn to_linear(x: i32, y: i32, dim: i32) -> usize {
-    return (y + x * dim) as usize;
-}
-
-#[allow(dead_code)]
-fn rotate_left(dir: (i32, i32)) -> (i32, i32) {
-    return (-dir.1, dir.0)
-}
-
-#[allow(dead_code)]
-fn rotate_right(dir: (i32, i32)) -> (i32, i32) {
-    return (dir.1, -dir.0)
-}
-
-#[allow(dead_code)]
-fn move_add(pos: (i32, i32), dir: (i32, i32)) -> (i32, i32) {
-    return (pos.0 + dir.0, pos.1 + dir.1);
-}
-
-
-pub fn second(input: &String, _map: &HashSet<(i32, i32)>, _pos: (i32, i32)) {
+pub fn second(input: &String) {
     let program: Vec<i64> = input.split(",")
                                  .map(|s| s.parse().unwrap())
                                  .collect();
-    /*
-       use std::io;
-    let path: Vec<char> = Vec::new();
-    let mut curr = pos;
-    let mut dir  = (-1, 0);
-    let mut steps = 0;
-    // let mut visited = HashSet::new();
-    let mut sequence = "".to_string();
-    loop {
-        let forward = move_add(curr, dir);
-        let left    = move_add(curr, rotate_left(dir));
-        let right   = move_add(curr, rotate_right(dir));
-
-        visited.insert(curr);
-        if false {
-            for x in -2..53 {
-                for y in -2..53 {
-                    if (x, y) == left {
-                        if map.contains(&left) {
-                            print!("L");
-                        } else {
-                            print!("l");
-                        }
-                    } else if (x, y) == right {
-                        if map.contains(&right) {
-                            print!("R");
-                        } else {
-                            print!("r");
-                        }
-                    } else if (x, y) == forward {
-                        if map.contains(&forward) {
-                            print!("F");
-                        } else {
-                            print!("f");
-                        }
-                    } else if visited.contains(&(x, y)) {
-                        print!("X");
-                    } else if map.contains(&(x, y)) {
-                        print!("O");
-                    } else {
-                        print!(".");
-                    }
-                }
-                println!("");
-            }
-            println!("{} {}", curr.0, curr.1);
-            let mut input_text = String::new();
-            io::stdin().read_line(&mut input_text);
-        }
-
-        if map.contains(&forward) {
-            steps += 1;
-            curr = forward;
-            continue
-        }
-        if steps != 0 {
-            sequence.push_str(&steps.to_string());
-            sequence.push(',');
-        }
-        if map.contains(&left) {
-            sequence.push('L');
-            dir = rotate_left(dir);
-        } else if map.contains(&right) {
-            sequence.push('R');
-            dir = rotate_right(dir);
-        } else {
-            break;
-        }
-        sequence.push(',');
-        steps = 0;
-    }
-    sequence.pop();
-    println!("{}", sequence);
-    */
-
     let mut memory: HashMap<i64, i64> = HashMap::new();
     for i in 0..program.len() {
         let value = program[i as usize];
         memory.insert(i as i64, value);
     }
-    memory.insert(0, 2);
-    let mut output = "".to_string();
     reset_int_comp();
+    let mut output: Vec<char> = Vec::new();
+    let string = "\
+OR C T
+NOT C J
+OR J T
+OR T J
+AND C T
+AND B T
+AND A T
+NOT T T
+AND D T
+NOT J J
+OR F J
+OR I J
+AND E J
+OR H J
+AND T J
+RUN
+".to_string();
     loop {
-        let result = run_program(& mut memory);
-        if result.0 < 256 {
+        let result = run_program(&mut memory, &string);
+        if result.1 { break; }
+        if result.0 < 255 {
             output.push((result.0 as u8) as char);
         } else {
-            println!("out: {}", result.0);
+            println!("DID IT: {}", result.0);
         }
-        if result.1 { break; }
     }
+    let output: String = output.into_iter().collect();
     println!("{}", output);
 }
 
@@ -198,16 +111,13 @@ fn reset_int_comp() {
     unsafe {
         BASE_PTR = 0;
         PROGRAM_PTR = 0;
+        INPUT_PTR = 0;
     }
 }
 
 static mut INPUT_PTR: usize = 0;
-fn run_program(mut program: &mut HashMap<i64, i64>) -> (i64, bool) {
-    let string: String = "A,B,A,C,B,C,B,A,C,B\nL,10,L,6,R,10\nR,6,R,8,R,8,L,6,R,8\nL,10,R,8,R,8,L,10\nn\n".to_string();
-    let mut it;
-    unsafe {
-        it = string.chars().skip(INPUT_PTR);
-    }
+fn run_program(mut program: &mut HashMap<i64, i64>, string: &String) -> (i64, bool) {
+    let mut it = string.chars().skip(unsafe {INPUT_PTR});
     loop {
         let mut index;
         unsafe {
@@ -239,7 +149,10 @@ fn run_program(mut program: &mut HashMap<i64, i64>) -> (i64, bool) {
                 // input
                 let c = fetch_val(& mut program, a_mode, index + 1, true);
                     
-                let i = (it.next().unwrap()).clone();
+                let i = match it.next() {
+                    Some(x) => x,
+                    _ => return (-2, true),
+                };
                 program.insert(c, i as i64);
                 unsafe {
                     INPUT_PTR += 1;
